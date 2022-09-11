@@ -1,5 +1,6 @@
 ﻿using Company.Data;
 using Company.Models;
+using Company.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,28 +11,28 @@ namespace Company.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-      
-        private readonly CompanyDbContext _db;
+        private readonly ICompanyRepository<Department> departmentRepository;
 
-        public DepartmentController(CompanyDbContext db )
+        public DepartmentController(ICompanyRepository<Department> departmentRepository)
         {
-            _db = db;
+            this.departmentRepository = departmentRepository;
         }
-
 
 
         [HttpGet]
 
-        public async Task<ActionResult<List<Department>>> Get()
+        public IActionResult getAll()
         {
-            return Ok(await _db.Departments.ToListAsync());
+            var departments = departmentRepository.getAll();
+            return Ok(departments);
+
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Department>> Get(int id)
+        public IActionResult get(int id)
         {
-            var department = await _db.Departments.FindAsync(id);
+            var department = departmentRepository.get(id);
             if (department == null)
             {
                 return BadRequest("Not found");
@@ -42,15 +43,25 @@ namespace Company.Controllers
 
 
 
-        
 
+        
         [HttpPost]
-        public async Task<ActionResult <List<Department>>> addDepartment(Department department)
+        public ActionResult Create(Department department)
         {
-            _db.Departments.Add(department);
-            await _db.SaveChangesAsync();
-            return Ok(await _db.Departments.ToListAsync());
+            departmentRepository.Create(department);
+            return Ok(department);
         }
+
+        [HttpDelete("{id}")]
+
+        public ActionResult Delete(int id, Department department)
+        {
+            departmentRepository.Delete(id);
+            return Ok();
+        }
+
+
+        /*
 
 
 
@@ -81,6 +92,6 @@ namespace Company.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(await _db.Departments.ToListAsync());
-        }
+        }*/
     }
 }
