@@ -56,7 +56,7 @@ namespace Company.Controllers
 
         [HttpDelete("{id}")]
 
-        public ActionResult Delete(int id, Department department)
+        public ActionResult Delete(int id)
         {
             employeeRepository.Delete(id);
             return Ok();
