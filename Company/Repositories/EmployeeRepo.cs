@@ -33,7 +33,9 @@ namespace Company.Repositories
 
         public IList<Employee> getAll()
         {
-            return db.Employees.OrderBy(d => d.Id).Include(x => x.Department).ToList();
+            return db.Employees.OrderBy(d => d.Id)
+                .Include(x => x.Department)
+                .ToList();
         }
 
         public void Update(int id, Employee newEmployee)

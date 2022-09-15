@@ -22,7 +22,7 @@ namespace Company.Controllers
         }
 
 
-        [HttpGet("{All}")]
+        [HttpGet]
 
         public IActionResult getAll()
         {
