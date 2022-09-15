@@ -1,4 +1,5 @@
-﻿using Company.Models;
+﻿using Company.Dtos;
+using Company.Models;
 using Company.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,8 +49,15 @@ namespace Company.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(Employee employee)
+        public ActionResult Create(EmployeeDto employeeDto)
         {
+            Employee employee = new Employee
+            {
+                Name = employeeDto.EmployeeName,
+                DepartmentId = employeeDto.DepartmentId,
+
+            };
+
             employeeRepository.Create(employee);
             return Ok(employee);
         }

@@ -45,9 +45,14 @@ namespace Company.Controllers
 
 
         
-        [HttpPost("createdee")]
-        public ActionResult Create(Department department)
+        [HttpPost]
+        public ActionResult Create(DepartmentDto departmentDto)
         {
+            Department department = new Department
+            {
+                Name = departmentDto.Name,
+
+            };
             departmentRepository.Create(department);
             return Ok(department);
         }
@@ -56,10 +61,8 @@ namespace Company.Controllers
 
         public ActionResult Delete(int id)
         {
-            
-
             departmentRepository.Delete(id);
-            return Ok("Department Deleted");
+            return Ok();
         }
 
 
