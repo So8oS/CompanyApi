@@ -70,5 +70,22 @@ namespace Company.Controllers
             return Ok();
         }
 
+
+        [HttpPut]
+        public ActionResult Update(int id, EmployeeDto request)
+        {
+
+
+            var employee = new Employee
+            {
+               Id = id,
+               Name = request.EmployeeName,
+               DepartmentId= request.DepartmentId,
+            };
+
+            employeeRepository.Update(id, employee);
+            return Ok(employee);
+        }
+
     }
 }
