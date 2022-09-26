@@ -1,4 +1,5 @@
-﻿using Company.Models;
+﻿using Company.Dtos;
+using Company.Models;
 using Company.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace Company.Controllers
         }
 
 
-        [HttpGet("{All}")]
+        [HttpGet]
 
         public IActionResult getAll()
         {
@@ -48,18 +49,42 @@ namespace Company.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(Employee employee)
+        public ActionResult Create(EmployeeDto employeeDto)
         {
+            Employee employee = new Employee
+            {
+                Name = employeeDto.EmployeeName,
+                DepartmentId = employeeDto.DepartmentId,
+
+            };
+
             employeeRepository.Create(employee);
             return Ok(employee);
         }
 
         [HttpDelete("{id}")]
 
-        public ActionResult Delete(int id, Department department)
+        public ActionResult Delete(int id)
         {
             employeeRepository.Delete(id);
             return Ok();
+        }
+
+
+        [HttpPut]
+        public ActionResult Update(int id, EmployeeDto request)
+        {
+
+
+            var employee = new Employee
+            {
+               Id = id,
+               Name = request.EmployeeName,
+               DepartmentId= request.DepartmentId,
+            };
+
+            employeeRepository.Update(id, employee);
+            return Ok(employee);
         }
 
     }

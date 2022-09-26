@@ -1,4 +1,5 @@
 ﻿using Company.Data;
+using Company.Dtos;
 using Company.Models;
 using Company.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -46,52 +47,47 @@ namespace Company.Controllers
 
         
         [HttpPost]
-        public ActionResult Create(Department department)
+        public ActionResult Create(DepartmentDto departmentDto)
         {
+            Department department = new Department
+            {
+                Name = departmentDto.Name,
+
+            };
             departmentRepository.Create(department);
             return Ok(department);
         }
 
         [HttpDelete("{id}")]
 
-        public ActionResult Delete(int id, Department department)
+        public ActionResult Delete(int id)
         {
             departmentRepository.Delete(id);
             return Ok();
         }
 
 
-        /*
+
 
 
 
         [HttpPut]
-        public async Task<ActionResult<List<Department>>> UpdateDepartment(Department request)
+        public ActionResult UpdateDepartment(int id, DepartmentDto request)
         {
-            var department = await _db.Departments.FindAsync(request.Id);
-            if (department == null)
-            {
-                return BadRequest("Not found");
-            }
-            await _db.SaveChangesAsync();
-            return Ok(await _db.Departments.ToListAsync());
-         }
-
-
-
-        [HttpDelete("{id}")]
             
-        public async Task<ActionResult<List<Department>>> DeleteDepartment( int id)
-        {
-            var department = await _db.Departments.FindAsync(id);
-            if (department == null)
-            {
-                return BadRequest("Not found");
-            }
-            _db.Departments.Remove(department);
-            await _db.SaveChangesAsync();
 
-            return Ok(await _db.Departments.ToListAsync());
-        }*/
+            var department = new Department
+            {
+                Id = id,
+                Name = request.Name,
+            };
+
+            departmentRepository.Update(id, department);
+            return Ok(department);
+        }
+
+
+
+
     }
 }
